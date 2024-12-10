@@ -1,61 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="si">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Gimhan Studio</title>
-    <link rel="icon" href="favicon.png" type="image/png">
-
+    <title>Gimhan Studio - සෘජු නිර්මාණ, නෙත් සටහනක්, හෙට දවසකට</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-
 <body>
-
-    <!-- Header Section -->
-    <header>
-        <h1>Welcome to Gimhan Studio</h1>
-        <p>Your one-stop destination for creative content</p>
-    </header>
-
-    <!-- Navigation -->
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#videos">Videos</a>
-        <a href="#contact">Contact</a>
+    <nav class="navbar">
+        <div class="logo">Gimhan Studio</div>
+        <div class="nav-links">
+            <a href="#home">මුල් පිටුව</a>
+            <a href="#about">පිළිබඳ </a>
+            <a href="#videos">වීඩියෝ</a>
+            <a href="#contact">සම්බන්ධතා</a>
+        </div>
+        <div class="burger-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </nav>
 
-    <!-- Home Section -->
-    <section id="home">
-        <h2>About Us</h2>
-        <p>Gimhan Studio showcases engaging videos on graphic design, coding, and digital creativity. We aim to inspire and educate through innovative content.</p>
-    </section>
-
-    <!-- Videos Section -->
-    <section id="videos">
-        <h2>Our Latest Videos</h2>
-        <div class="videos">
-            <div class="video">
-                <iframe src="https://www.youtube.com/embed/To4duqN1i4M" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                <p>Coding Basics: EP 01</p>
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Gimhan Studio</h1>
+                <p>සෘජු නිර්මාණ, නෙත් සටහනක්, හෙට දවසකට</p>
+                <div class="cta-buttons">
+                    <a href="#videos" class="btn primary">වීඩියෝ</a>
+                    <a href="#contact" class="btn secondary">සම්බන්ධතා</a>
+                </div>
             </div>
-            <!-- Add more videos here if needed -->
-        </div>
-    </section>
+        </section>
 
-    <!-- Contact Section -->
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <p>Email: <a href="gimhastudio@gmail.com">gimhastudio@gmail.com</a></p>
-        <p>Phone: +94 767953622</p>
-    </section>
+        <section id="about" class="about-section">
+            <div class="section-header">
+                <h2>අපි ගැන</h2>
+                <p>අපි, Gimhan Designing සහ Gimhan Studio එකතුවෙන්, නිර්මාණාත්මක, වෘත්තීය සහ ගනුදෙනුකාරී අවශ්‍යතා සඳහා විශිෂ්ට ඩිජිටල් සේවාවන් සහ ග්‍රැෆික් නිර්මාණ අත්දැකීම් ලබා දෙන්නෙමු.</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-card">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>code</h3>
+                    <p>අපි කෝඩින්ග් මගින් කාර්යක්ෂම හා නවීන වෙබ් සහ මෘදුකාංග විසඳුම් නිර්මාණය කරමු.</p>
+                </div>
+                <div class="about-card">
+                    <i class="fas fa-palette"></i>
+                    <h3>graphic designing</h3>
+                    <p>මට graphic designing ගැන මනා අත්දැකීම් සහ ආසාවක් තියෙනවා. දෘශ්‍ය අංග මඟින් සංකල්ප හා පණිවුඩ නිර්මාණය කිරීමේදී මට සෑම විටම අලුත් හා නිර්මාණශීලී දෘෂ්ටීකෝණයක් භාවිතා කරනවා."</p>
+                </div>
+                <div class="about-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>About me</h3>
+                    <p>මම ඔලිෂ ගිම්හාන් 
+මට වයස අවුරුදු 14 
+මම තාම ඉස්කෝලේ යනවා 
+මට ඕනේ මම දන්න දේ නොදන්න කෙනෙකුට කියලා දෙන්න</p>
+                </div>
+            </div>
+        </section>
 
-    <!-- Footer Section -->
+        <section id="videos" class="video-section">
+            <div class="section-header">
+                <h2>නව දැක්මක් අළුත් අදහස් සමගින් වෙනස් ම දැනුමක්</h2>
+            <h3>Coding Basics: Programming එකට පළවෙනි පියවර
+🎥  - EP 01</h3>
+                </dvihttps://youtu.be/To4duqN1i4M?si=GcUGA504G07azrA3>
+                <div class="vedio card">
+                    <div class="vi">
+                        
+              
+                  
+        
+
+        <section id="contact" class="contact-section">
+            <div class="section-header">
+                <h2>අප හා සම්බන්ධ වන්න</h2>
+            </div>
+            <div class="contact-form">
+                <form>
+                    <input type="text" placeholder="text" required>
+                    <input type="email" placeholder="email" required>
+                    <textarea placeholder="gimhanstudio@gmail.com" required></textarea>
+                    <button type="submit" class="btn primary">submit</button>
+                </form>gimhastudio@gmail.com
+            </div>
+            <div class="contact-info">
+                <p>Email: gimhastudio@gmail.com</p>
+                <p>phone: +94 761543622</p>
+            </div>
+        </section>
+    </main>
+
     <footer>
-        <p>&copy; 2024 Gimhan Studio. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>© 2024 Gimhan Studio. සියලු හිමිකම් ඇවිරිණි.</p>
     </footer>
 
+    <script src="script.js">vfg</script>
 </body>
-
 </html>
