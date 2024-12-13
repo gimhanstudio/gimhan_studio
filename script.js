@@ -1,4 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const sideNav = document.getElementById('sideNav');
+    const navCloseBtn = document.querySelector('.nav-close-btn');
+
+    // Mobile Menu Toggle
+    mobileMenuToggle.addEventListener('click', () => {
+        sideNav.classList.toggle('open');
+    });
+
+    // Close Navigation on Mobile
+    navCloseBtn.addEventListener('click', () => {
+        sideNav.classList.remove('open');
+    });
+
+    // Close Navigation when clicking outside
+    document.addEventListener('click', (event) => {
+        if (!sideNav.contains(event.target) && 
+            !mobileMenuToggle.contains(event.target) && 
+            window.innerWidth <= 768) {
+            sideNav.classList.remove('open');
+        }
+    });
+
     // GSAP Animations
     gsap.registerPlugin(ScrollTrigger);
 
@@ -13,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Section Reveal Animations
+    // Responsive Section Reveal Animations
     gsap.utils.toArray('section').forEach(section => {
         gsap.from(section, {
             scrollTrigger: {
@@ -27,142 +50,298 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Glitch Text Effect
-    const glitchText = document.querySelector('.glitch');
-    if (glitchText) {
-        glitchText.addEventListener('mouseenter', () => {
-            glitchText.dataset.text = glitchText.textContent;
-        });
-    }
-
     // Smooth Scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
+            const targetSection = document.querySelector(this.getAttribute('href'));
+            targetSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
             });
         });
     });
-
-    // Contact Form Submission
-    const contactForm = document.querySelector('.contact-form');
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('පනිවුඩය යවා ඇත! පසුව සම්බන්ධ වෙමු.');
-        contactForm.reset();
-    });
 });
 
-
-
-        // Video Upload Functions
 document.addEventListener('DOMContentLoaded', () => {
     const videoUploadForm = document.getElementById('videoUploadForm');
-    const videoFileInput = document.getElementById('videoFile');
+    const videoUrlInput = document.getElementById('videoUrl');
     const videoPreview = document.getElementById('videoPreview');
     const uploadedVideosGrid = document.getElementById('uploadedVideosGrid');
 
-    // Video Preview Function
-    videoFileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const fileURL = URL.createObjectURL(file);
-            videoPreview.src = fileURL;
+    // YouTube URL වෙන් කිරීම
+    function extractYouTubeVideoId(url) {
+        const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+        const match = url.match(regex);
+        return match ? match[1] : null;
+    }
+
+    // Video Preview පෙන්වීම
+    videoUrlInput.addEventListener('input', () => {
+        const videoId = extractYouTubeVideoId(videoUrlInput.value);
+        if (videoId) {
+            videoPreview.src = `https://www.youtube.com/embed/${videoId}`;
             videoPreview.style.display = 'block';
+        } else {
+            videoPreview.style.display = 'none';
         }
     });
 
-    // Video Upload Function
+    // Video Upload කිරීම
     videoUploadForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        
-        const titleInput = videoUploadForm.querySelector('input[type="text"]');
-        const fileInput = videoFileInput;
-        const descriptionInput = videoUploadForm.querySelector('textarea');
 
-        const file = fileInput.files[0];
-        const title = titleInput.value;
-        const description = descriptionInput.value;
+        const videoId = extractYouTubeVideoId(videoUrlInput.value);
+        const videoTitle = document.getElementById('videoTitle').value;
+        const videoDescription = document.getElementById('videoDescription').value;
 
-        if (file) {
-            const videoCard = document.createElement('div');
-            videoCard.classList.add('video-card');
-            
-            const videoElement = document.createElement('video');
-            videoElement.src = URL.createObjectURL(file);
-            videoElement.controls = true;
-            videoElement.style.maxWidth = '100%';
+        if (!videoId) {
+            alert('කරුණාකර වලංගු YouTube URL එකක් ඇතුළු කරන්න');
+            return;
+        }
 
-            const titleElement = document.createElement('h3');
-            titleElement.textContent = title;
+        // Video card නිර්මාණය කිරීම
+        const videoCard = document.createElement('div');
+        videoCard.classList.add('video-card');
+        videoCard.innerHTML = `
+            <iframe width="100%" height="200" 
+                src="https://www.youtube.com/embed/${videoId}" 
+                frameborder="0" 
+                allowfullscreen>
+            </iframe>
+            <h3>${videoTitle}</h3>
+            <p>${videoDescription}</p>
+        `;
 
-            const descriptionElement = document.createElement('p');
-            descriptionElement.textContent = description;
+        // Video grid වෙත එක් කිරීම
+        uploadedVideosGrid.insertBefore(videoCard, uploadedVideosGrid.firstChild);
 
-            videoCard.appendChild(videoElement);
-            videoCard.appendChild(titleElement);
-            videoCard.appendChild(descriptionElement);
+        // Form Reset කිරීම
+        videoUploadForm.reset();
+        videoPreview.style.display = 'none';
 
-  
-            
-            
-        uploadedVideosGrid.appendChild(videoCard);
-
-            // Reset form
-            videoUploadForm.reset();
-            videoPreview.style.display = 'none';
-
-
-
-            document.addEventListener('DOMContentLoaded', () => {
-    const sideNav = document.querySelector('.side-nav');
-    const mobileMenuToggle = document.createElement('button');
-    mobileMenuToggle.classList.add('mobile-menu-toggle');
-    mobileMenuToggle.innerHTML = `
-        <span></span>
-        <span></span>
-        <span></span>
-    `;
-    document.body.appendChild(mobileMenuToggle);
-
-    // Mobile Menu Toggle Function
-    mobileMenuToggle.addEventListener('click', () => {
-        sideNav.classList.toggle('mobile-open');
-        mobileMenuToggle.classList.toggle('active');
-    });
-
-    // Close Mobile Menu When Link Clicked
-    const mobileNavLinks = document.querySelectorAll('.side-nav .nav-link');
-    mobileNavLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            sideNav.classList.remove('mobile-open');
-            mobileMenuToggle.classList.remove('active');
+        // Local Storage වෙත සුරක්ෂිත කිරීම (Optional)
+        saveVideoToLocalStorage({
+            id: videoId,
+            title: videoTitle,
+            description: videoDescription
         });
     });
 
-    // Responsive Handling
-    function handleResponsiveness() {
-        const screenWidth = window.innerWidth;
-        
-        if (screenWidth <= 768) {
-            sideNav.style.width = '0';
-            mobileMenuToggle.style.display = 'block';
-        } else {
-            sideNav.style.width = '250px';
-            mobileMenuToggle.style.display = 'none';
-            sideNav.classList.remove('mobile-open');
-        }
+    // Local Storage වෙත videos සුරක්ෂිත කිරීම
+    function saveVideoToLocalStorage(video) {
+        let videos = JSON.parse(localStorage.getItem('uploadedVideos') || '[]');
+        videos.unshift(video);
+        localStorage.setItem('uploadedVideos', JSON.stringify(videos));
     }
 
-    // Initial Check
-    handleResponsiveness();
+    // Page load කිරීමේදී Local Storage සිට videos පැටවීම
+    function loadVideosFromLocalStorage() {
+        const videos = JSON.parse(localStorage.getItem('uploadedVideos') || '[]');
+        videos.forEach(video => {
+            const videoCard = document.createElement('div');
+            videoCard.classList.add('video-card');
+            videoCard.innerHTML = `
+                <iframe width="100%" height="200" 
+                    src="https://www.youtube.com/embed/${video.id}" 
+                    frameborder="0" 
+                    allowfullscreen>
+                </iframe>
+                <h3>${video.title}</h3>
+                <p>${video.description}</p>
+            `;
+            uploadedVideosGrid.appendChild(videoCard);
+        });
+    }
 
-    // Resize Event
-    window.addEventListener('resize', handleResponsiveness);
+    // Page load කිරීමේදී videos පැටවීම
+    loadVideosFromLocalStorage();
 });
 
-            alert('විඩියෝව සාර්ථකව අඩංගු කරන්න');
+
+document.addEventListener('DOMContentLoaded', () => {
+    const messagingForm = document.getElementById('messagingForm');
+    const messageInput = document.getElementById('messageInput');
+    const chatMessages = document.getElementById('chatMessages');
+
+    // Local Storage වෙත පණිවුඩ සුරැකීම
+    function saveMessageToLocalStorage(message) {
+        let messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+        messages.push({
+            text: message,
+            timestamp: new Date().toISOString(),
+            sender: 'user'
+        });
+        localStorage.setItem('chatMessages', JSON.stringify(messages));
+    }
+
+    // Auto-response function
+    function generateAutoResponse() {
+        const responses = [
+            "ඔබේ පණිවුඩය දැනුම් දුන්නට ස්තුතියි! අප �ක්ෂණිකව පිළිතුරු දක්වන්නේ.",
+            "ඔබේ සන්නිවේදනය අගය කරමු. අප ඉක්මනින් සම්බන්ධ වෙමු.",
+            "මම ඔබේ පණිවුඩය පිළිගත්තෙමි. කරුණාකර රැඳී සිටින්න.",
+            "ඔබේ පණිවුඩය සාර්ථකව එවා ඇත. පිළිතුරු ලබා දෙන්නෙමු.",
+            "ඔබේ සන්නිවේදනය සලකා බැලීමට ස්තුතියි!"
+        ];
+        return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // පණිවුඩයක් එකතු කිරීම
+    function addMessageToChat(message, sender = 'user') {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', `message-${sender}`);
+        messageElement.innerHTML = `
+            <div class="message-content">${message}</div>
+            <div class="message-time">${new Date().toLocaleTimeString()}</div>
+        `;
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // පණිවුඩ යැවීමේ සිදුවීම් කළමනාකරණය
+    messagingForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const message = messageInput.value.trim();
+        
+        if (message) {
+            // පරිශීලක පණිවුඩය එකතු කිරීම
+            addMessageToChat(message, 'user');
+            
+            // Local Storage වෙත සුරැකීම
+            saveMessageToLocalStorage(message);
+            
+            // Input field එක reset කිරීම
+            messageInput.value = '';
+
+            // Auto-response එක යැවීම
+            setTimeout(() => {
+                const autoResponse = generateAutoResponse();
+                addMessageToChat(autoResponse, 'system');
+                saveMessageToLocalStorage(autoResponse);
+            }, 1000);
         }
     });
+
+    // Local Storage වෙතින් පැරණි පණිවුඩ පැටවීම
+    function loadMessagesFromLocalStorage() {
+        const messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+        messages.forEach(msg => {
+            addMessageToChat(msg.text, msg.sender);
+        });
+    }
+
+    // Page load කිරීමේදී පැරණි පණිවුඩ පැටවීම
+    loadMessagesFromLocalStorage();
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const messagingForm = document.getElementById('messagingForm');
+    const messageInput = document.getElementById('messageInput');
+    const chatMessages = document.getElementById('chatMessages');
+
+    // Local Storage වෙත පණිවුඩ සුරැකීම
+    function saveMessageToLocalStorage(message, sender) {
+        let messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+        const newMessage = {
+            id: Date.now(), // අද්විතීය හැඳුනුම්පත එක් කිරීම
+            text: message,
+            timestamp: new Date().toISOString(),
+            sender: sender
+        };
+        messages.push(newMessage);
+        localStorage.setItem('chatMessages', JSON.stringify(messages));
+        return newMessage.id;
+    }
+
+    // Local Storage වලින් පණිවුඩයක් මැකීම
+    function deleteMessageFromLocalStorage(messageId) {
+        let messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+        messages = messages.filter(msg => msg.id !== messageId);
+        localStorage.setItem('chatMessages', JSON.stringify(messages));
+    }
+
+    // Auto-response function
+    function generateAutoResponse() {
+        const responses = [
+            "ඔබේ පණිවුඩය දැනුම් දුන්නට ස්තුතියි! අප ක්ෂණිකව පිළිතුරු දක්වන්නේ.",
+            "ඔබේ සන්නිවේදනය අගය කරමු. අප ඉක්මනින් සම්බන්ධ වෙමු.",
+            "මම ඔබේ පණිවුඩය පිළිගත්තෙමි. කරුණාකර රැඳී සිටින්න.",
+            "ඔබේ පණිවුඩය සාර්ථකව එවා ඇත. පිළිතුරු ලබා දෙන්නෙමු.",
+            "ඔබගේ පණිවුඩයට ස්තුතියි"
+        ];
+        return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // පණිවුඩයක් එකතු කිරීම
+    function addMessageToChat(message, sender = 'user', messageId = null) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', `message-${sender}`);
+        messageElement.dataset.messageId = messageId || Date.now();
+        
+        const deleteButton = document.createElement('button');
+        deleteButton.innerHTML = '🗑️';
+        deleteButton.classList.add('delete-message-btn');
+        deleteButton.addEventListener('click', () => {
+            deleteMessage(messageElement);
+        });
+
+        messageElement.innerHTML = `
+            <div class="message-content">${message}</div>
+            <div class="message-time">
+                ${new Date().toLocaleTimeString()}
+                ${sender === 'user' ? deleteButton.outerHTML : ''}
+            </div>
+        `;
+        
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // පණිවුඩ මැකීම
+    function deleteMessage(messageElement) {
+        const messageId = parseInt(messageElement.dataset.messageId);
+        
+        // Local Storage වලින් මැකීම
+        deleteMessageFromLocalStorage(messageId);
+        
+        // DOM වලින් මැකීම
+        messageElement.remove();
+    }
+
+    // පණිවුඩ යැවීමේ සිදුවීම් කළමනාකරණය
+    messagingForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const message = messageInput.value.trim();
+        
+        if (message) {
+            // පරිශීලක පණිවුඩය එකතු කිරීම
+            const messageId = saveMessageToLocalStorage(message, 'user');
+            addMessageToChat(message, 'user', messageId);
+            
+            // Input field එක reset කිරීම
+            messageInput.value = '';
+
+            // Auto-response එක යැවීම
+            setTimeout(() => {
+                const autoResponse = generateAutoResponse();
+                const responseId = saveMessageToLocalStorage(autoResponse, 'system');
+                addMessageToChat(autoResponse, 'system', responseId);
+            }, 1000);
+        }
+    });
+
+    // Local Storage වෙතින් පැරණි පණිවුඩ පැටවීම
+    function loadMessagesFromLocalStorage() {
+        const messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+        messages.forEach(msg => {
+            addMessageToChat(msg.text, msg.sender, msg.id);
+        });
+    }
+
+    // Page load කිරීමේදී පැරණි පණිවුඩ පැටවීම
+    loadMessagesFromLocalStorage();
 });
