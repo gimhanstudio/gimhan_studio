@@ -22,6 +22,24 @@ body {
     line-height: 1.6;
 }
 
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1100;
+}
+
+.mobile-menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: var(--neon-blue);
+    margin: 3px 0;
+    transition: 0.4s;
+}
+
 .side-nav {
     position: fixed;
     left: 0;
@@ -40,6 +58,16 @@ body {
 .nav-logo img {
     max-width: 120px;
     filter: brightness(1.2) contrast(1.2);
+}
+
+.nav-close-btn {
+    display: none;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 2rem;
+    color: var(--neon-blue);
+    cursor: pointer;
 }
 
 .side-nav ul {
@@ -78,6 +106,10 @@ body {
     justify-content: center;
     background: linear-gradient(135deg, var(--dark-background), var(--deep-blue));
     margin-left: 250px;
+}
+
+.hero-content {
+    text-align: center;
 }
 
 .glitch {
@@ -120,22 +152,6 @@ body {
     text-align: center;
     transition: transform 0.3s ease;
 }
-
-.contact-section {
-    margin-left: 250px;
-    padding: 4rem 2rem;
-    background-color: var(--dark-background);
-}
-
-footer {
-    margin-left: 250px;
-    background-color: var(--deep-blue);
-    padding: 2rem;
-    text-align: center;
-}
-
-
-
 
 .video-upload-section {
     margin-left: 250px;
@@ -180,11 +196,177 @@ footer {
     margin-bottom: 1rem;
 }
 
-.video-card h3 {
-    color: var(--neon-blue);
-    margin-bottom: 0.5rem;
+.contact-section {
+    margin-left: 250px;
+    padding: 4rem 2rem;
+    background-color: var(--dark-background);
 }
 
-.video-card p {
+footer {
+    margin-left: 250px;
+    background-color: var(--deep-blue);
+    padding: 2rem;
+    text-align: center;
+}
+
+.messaging-section {
+    margin-left: 250px;
+    padding: 4rem 2rem;
+    background-color: var(--dark-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.messaging-container {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: var(--deep-blue);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.chat-window {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.message {
+    max-width: 80%;
+    padding: 0.75rem;
+    border-radius: 10px;
+    position: relative;
+}
+
+.message-user {
+    align-self: flex-end;
+    background-color: var(--neon-blue);
+    color: var(--dark-background);
+}
+
+.message-system {
+    align-self: flex-start;
+    background-color: var(--dark-background);
+    border: 1px solid var(--neon-blue);
+}
+
+.message-time {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.6);
+    margin-top: 0.25rem;
+    text-align: right;
+}
+
+.message-input-form {
+    display: flex;
+    padding: 1rem;
+    background-color: var(--dark-background);
+}
+
+.message-input-form input {
+    flex-grow: 1;
+    margin-right: 1rem;
+    padding: 0.75rem;
+    background-color: var(--deep-blue);
     color: var(--text-color);
+    border: none;
+    border-radius: 5px;
+}
+
+.message-input-form button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Responsive Breakpoints */
+@media screen and (max-width: 768px) {
+    .side-nav {
+        left: -250px;
+    }
+
+    .side-nav.open {
+        left: 0;
+    }
+
+    .mobile-menu-toggle {
+        display: flex;
+    }
+
+    .nav-close-btn {
+        display: block;
+    }
+
+    .hero-section, .about-grid, .services-grid, .contact-section, .video-upload-section, footer, .messaging-section {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .about-grid, .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-content {
+        text-align: center;
+    }
+
+    .glitch {
+        font-size: 2.5rem;
+    }
+
+    .btn {
+        display: block;
+        margin: 10px auto;
+    }
+
+    .messaging-section {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .chat-window {
+        height: 400px;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .side-nav {
+        width: 200px;
+    }
+
+    .hero-section, .about-grid, .services-grid, .contact-section, .video-upload-section, footer, .messaging-section {
+        margin-left: 200px;
+    }
+}
+
+
+.delete-message-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    margin-left: 10px;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.delete-message-btn:hover {
+    opacity: 1;
+}
+
+.message-time {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
