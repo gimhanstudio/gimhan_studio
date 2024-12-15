@@ -128,7 +128,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-   
+    // Local Storage වෙත videos සුරක්ෂිත කිරීම
+    function saveVideoToLocalStorage(video) {
+        let videos = JSON.parse(localStorage.getItem('uploadedVideos') || '[]');
+        videos.unshift(video);
+        localStorage.setItem('uploadedVideos', JSON.stringify(videos));
+    }
+
+    // Page load කිරීමේදී Local Storage සිට videos පැටවීම
+    function loadVideosFromLocalStorage() {
+        const videos = JSON.parse(localStorage.getItem('uploadedVideos') || '[]');
+        videos.forEach(video => {
+            const videoCard = document.createElement('div');
+            videoCard.classList.add('video-card');
+            videoCard.innerHTML = `
+                <iframe width="100%" height="200" 
+                    src="https://www.youtube.com/embed/${video.id}" 
+                    frameborder="0" 
+                    allowfullscreen>
+                </iframe>
+                <h3>${video.title}</h3>
+                <p>${video.description}</p>
+            `;
+            uploadedVideosGrid.appendChild(videoCard);
+        });
+    }
+
+    // Page load කිරීමේදී videos පැටවීම
+    loadVideosFromLocalStorage();
+});
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const messagingForm = document.getElementById('messagingForm'); // පණිවුඩ යැවීමේ form එක
