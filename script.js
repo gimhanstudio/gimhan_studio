@@ -160,188 +160,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    const messagingForm = document.getElementById('messagingForm');
-    const messageInput = document.getElementById('messageInput');
-    const chatMessages = document.getElementById('chatMessages');
+    const messagingForm = document.getElementById('messagingForm'); // පණිවුඩ යැවීමේ form එක
+    const messageInput = document.getElementById('messageInput'); // පණිවිඩ input box එක
+    const chatMessages = document.getElementById('chatMessages'); // පණිවුඩ පෙන්වන box එක
 
-    // Local Storage වෙත පණිවුඩ සුරැකීම
-    function saveMessageToLocalStorage(message) {
-        let messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
-        messages.push({
-            text: message,
-            timestamp: new Date().toISOString(),
-            sender: 'user'
-        });
-        localStorage.setItem('chatMessages', JSON.stringify(messages));
-    }
-
-    // Auto-response function
-    function generateAutoResponse() {
-        const responses = [
-            "ඔබේ පණිවුඩය දැනුම් දුන්නට ස්තුතියි! අප �ක්ෂණිකව පිළිතුරු දක්වන්නේ.",
-            "ඔබේ සන්නිවේදනය අගය කරමු. අප ඉක්මනින් සම්බන්ධ වෙමු.",
-            "මම ඔබේ පණිවුඩය පිළිගත්තෙමි. කරුණාකර රැඳී සිටින්න.",
-            "ඔබේ පණිවුඩය සාර්ථකව එවා ඇත. පිළිතුරු ලබා දෙන්නෙමු.",
-            "ඔබේ සන්නිවේදනය සලකා බැලීමට ස්තුතියි!"
-        ];
-        return responses[Math.floor(Math.random() * responses.length)];
-    }
-
-    // පණිවුඩයක් එකතු කිරීම
+    // පණිවිඩය එකතු කිරීමේ function එක
     function addMessageToChat(message, sender = 'user') {
         const messageElement = document.createElement('div');
-        messageElement.classList.add('message', `message-${sender}`);
+        messageElement.classList.add('message', `message-${sender}`); // පණිවිඩ class එක ලබා දීම
         messageElement.innerHTML = `
             <div class="message-content">${message}</div>
             <div class="message-time">${new Date().toLocaleTimeString()}</div>
         `;
-        chatMessages.appendChild(messageElement);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        chatMessages.appendChild(messageElement); // Chat window එකට එකතු කිරීම
+        chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll එක පහළට ගෙන යන්න
     }
 
-    // පණිවුඩ යැවීමේ සිදුවීම් කළමනාකරණය
-    messagingForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const message = messageInput.value.trim();
-        
-        if (message) {
-            // පරිශීලක පණිවුඩය එකතු කිරීම
-            addMessageToChat(message, 'user');
-            
-            // Local Storage වෙත සුරැකීම
-            saveMessageToLocalStorage(message);
-            
-            // Input field එක reset කිරීම
-            messageInput.value = '';
-
-            // Auto-response එක යැවීම
-            setTimeout(() => {
-                const autoResponse = generateAutoResponse();
-                addMessageToChat(autoResponse, 'system');
-                saveMessageToLocalStorage(autoResponse);
-            }, 1000);
-        }
-    });
-
-    // Local Storage වෙතින් පැරණි පණිවුඩ පැටවීම
-    function loadMessagesFromLocalStorage() {
-        const messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
-        messages.forEach(msg => {
-            addMessageToChat(msg.text, msg.sender);
-        });
-    }
-
-    // Page load කිරීමේදී පැරණි පණිවුඩ පැටවීම
-    loadMessagesFromLocalStorage();
-});
-
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    const messagingForm = document.getElementById('messagingForm');
-    const messageInput = document.getElementById('messageInput');
-    const chatMessages = document.getElementById('chatMessages');
-
-    // Local Storage වෙත පණිවුඩ සුරැකීම
-    function saveMessageToLocalStorage(message, sender) {
-        let messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
-        const newMessage = {
-            id: Date.now(), // අද්විතීය හැඳුනුම්පත එක් කිරීම
-            text: message,
-            timestamp: new Date().toISOString(),
-            sender: sender
-        };
-        messages.push(newMessage);
-        localStorage.setItem('chatMessages', JSON.stringify(messages));
-        return newMessage.id;
-    }
-
-    // Local Storage වලින් පණිවුඩයක් මැකීම
-    function deleteMessageFromLocalStorage(messageId) {
-        let messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
-        messages = messages.filter(msg => msg.id !== messageId);
-        localStorage.setItem('chatMessages', JSON.stringify(messages));
-    }
-
-    // Auto-response function
-    function generateAutoResponse() {
-        const responses = [
-            "ඔබේ පණිවුඩය දැනුම් දුන්නට ස්තුතියි! අප ක්ෂණිකව පිළිතුරු දක්වන්නේ.",
-            "ඔබේ සන්නිවේදනය අගය කරමු. අප ඉක්මනින් සම්බන්ධ වෙමු.",
-            "මම ඔබේ පණිවුඩය පිළිගත්තෙමි. කරුණාකර රැඳී සිටින්න.",
-            "ඔබේ පණිවුඩය සාර්ථකව එවා ඇත. පිළිතුරු ලබා දෙන්නෙමු.",
-            "ඔබගේ පණිවුඩයට ස්තුතියි"
-        ];
-        return responses[Math.floor(Math.random() * responses.length)];
-    }
-
-    // පණිවුඩයක් එකතු කිරීම
-    function addMessageToChat(message, sender = 'user', messageId = null) {
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message', `message-${sender}`);
-        messageElement.dataset.messageId = messageId || Date.now();
-        
-        const deleteButton = document.createElement('button');
-        deleteButton.innerHTML = '🗑️';
-        deleteButton.classList.add('delete-message-btn');
-        deleteButton.addEventListener('click', () => {
-            deleteMessage(messageElement);
-        });
-
-        messageElement.innerHTML = `
-            <div class="message-content">${message}</div>
-            <div class="message-time">
-                ${new Date().toLocaleTimeString()}
-                ${sender === 'user' ? deleteButton.outerHTML : ''}
-            </div>
+    // Auto-response (ස්වයංක්‍රීය පිළිතුරු) function එක
+    function sendAutoReply() {
+        const autoReply = `
+        ගිම්හන් ස්ටුඩියෝ,<br>
+        Graphic Design | Photography | Web Design | Content Creation.<br>
+        Contact Number: +94 76 795 3622<br>
+        Email: gimhanstudio@gmail.com<br>
+        Website: https://gimhanstudio.github.io/gimhan_studio/<br>
+        Location: Gampaha, Sri Lanka<br> 
+        Quality and Creativity You Can Trust. Let’s bring your vision to life!.
         `;
-        
-        chatMessages.appendChild(messageElement);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        addMessageToChat(autoReply, 'system'); // පද්ධතියෙන් පණිවිඩයක් යැවීම
     }
 
-    // පණිවුඩ මැකීම
-    function deleteMessage(messageElement) {
-        const messageId = parseInt(messageElement.dataset.messageId);
-        
-        // Local Storage වලින් මැකීම
-        deleteMessageFromLocalStorage(messageId);
-        
-        // DOM වලින් මැකීම
-        messageElement.remove();
-    }
-
-    // පණිවුඩ යැවීමේ සිදුවීම් කළමනාකරණය
+    // පණිවිඩ යැවීමේ submit event එක
     messagingForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const message = messageInput.value.trim();
-        
-        if (message) {
-            // පරිශීලක පණිවුඩය එකතු කිරීම
-            const messageId = saveMessageToLocalStorage(message, 'user');
-            addMessageToChat(message, 'user', messageId);
-            
-            // Input field එක reset කිරීම
-            messageInput.value = '';
+        e.preventDefault(); // Default form behavior නවත්වන්න
+        const message = messageInput.value.trim(); // Input value එක trim කිරීම (අතරක් ඉවත් කරනවා)
 
-            // Auto-response එක යැවීම
+        if (message) {
+            addMessageToChat(message, 'user'); // පරිශීලක පණිවිඩය එකතු කිරීම
+            messageInput.value = ''; // Input box එක පිරිසිදු කිරීම
+
             setTimeout(() => {
-                const autoResponse = generateAutoResponse();
-                const responseId = saveMessageToLocalStorage(autoResponse, 'system');
-                addMessageToChat(autoResponse, 'system', responseId);
-            }, 1000);
+                sendAutoReply(); // Auto-response එක යැවීම
+            }, 1000); // 1 තත්පරයෙන් පිළිතුරක්
         }
     });
-
-    // Local Storage වෙතින් පැරණි පණිවුඩ පැටවීම
-    function loadMessagesFromLocalStorage() {
-        const messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
-        messages.forEach(msg => {
-            addMessageToChat(msg.text, msg.sender, msg.id);
-        });
-    }
-
-    // Page load කිරීමේදී පැරණි පණිවුඩ පැටවීම
-    loadMessagesFromLocalStorage();
 });
+
